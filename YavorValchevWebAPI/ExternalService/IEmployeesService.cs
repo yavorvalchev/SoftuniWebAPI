@@ -7,6 +7,6 @@ namespace YavorValchevWebAPI.ExternalService
 {
     public interface IEmployeesService: IDisposable
     {
-        List<Employee> GetEmployees();
+        IEnumerable<Employee> GetEmployees();
     }
 }

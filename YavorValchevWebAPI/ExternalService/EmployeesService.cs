@@ -12,7 +12,7 @@ namespace YavorValchevWebAPI.ExternalService
             
         }
 
-        public List<Employee> GetEmployees()
+        public IEnumerable<Employee> GetEmployees()
         {
             return new List<Employee>
             {

@@ -14,27 +14,43 @@ namespace YavorValchevWebAPI.Controllers
 {
     public class EmployeesController : ApiController
     {
-        
-        public IEnumerable<EmployeeSummary> GetEmployees()
+
+        public IEnumerable<EmployeeSummary> GetEmployees(Guid? departmentId, string city)
         {
             using (var service = new EmployeesService())
             {
-                return service.GetEmployees().Select(employee => ConvertToEmployeeSummary(employee));
-            }
-        }
-        
-        public IEnumerable<EmployeeSummary> GetEmployees(Guid departmentId)
-        {
-            using (var service = new EmployeesService())
-            {
-                return GetEmployeesByDepartment(service.GetEmployees(), departmentId)
+                return FilterEmployees(service.GetEmployees(), departmentId, city)
                     ?.Select(employee => ConvertToEmployeeSummary(employee));
             }
         }
-        
-        public IEnumerable<Employee> GetEmployeesByDepartment(IEnumerable<Employee> employees, Guid departmentId)
+
+        //public IEnumerable<EmployeeSummary> GetEmployees(Guid? departmentId, string city)
+        //{
+        //    using (IEmployeesService service = new EmployeesService())
+        //    {
+        //        var employees = service.GetEmployees();
+        //        if (departmentId.HasValue)
+        //            employees = employees?.Where(employee => employee.DepartmentId == departmentId);
+        //        if (!string.IsNullOrEmpty(city))
+        //            employees = employees.Where(employee => employee?.Address?.City == city);
+
+        //        return employees?.Select(employee => new EmployeeSummary
+        //        {
+        //            FullName = (employee.FirstName + " " + employee.LastName).Trim(),
+        //            City = employee.Address?.City,
+        //            Email = employee.Email,
+        //            Id = employee.Id
+        //        });
+        //    }
+        //}
+
+        public IEnumerable<Employee> FilterEmployees(IEnumerable<Employee> employees, Guid? departmentId, string city)
         {
-            return employees?.Where(employee => employee.DepartmentId == departmentId);
+            if(departmentId.HasValue)
+                employees = employees?.Where(employee => employee.DepartmentId == departmentId);
+            if (!string.IsNullOrEmpty(city))
+                employees = employees.Where(employee => employee?.Address?.City == city);
+            return employees;
         }
 
         public EmployeeSummary ConvertToEmployeeSummary(Employee employee)
