@@ -15,16 +15,18 @@ namespace YavorValchevWebAPI.Controllers
     public class EmployeesController : ApiController
     {
 
-        public IEnumerable<EmployeeSummary> GetEmployees(Guid? departmentId, string city)
+        public IEnumerable<EmployeeSummary> GetEmployees(Guid? departmentId = null,
+            string city = null)
         {
             using (var service = new EmployeesService())
             {
-                return FilterEmployees(service.GetEmployees(), departmentId, city)
-                    ?.Select(employee => ConvertToEmployeeSummary(employee));
+                var employees = service.GetEmployees();
+                return FilterEmployees(employees, departmentId, city)
+                    .Select(employee => ConvertToEmployeeSummary(employee));
             }
         }
 
-        //public IEnumerable<EmployeeSummary> GetEmployees(Guid? departmentId, string city)
+        //public IEnumerable<EmployeeSummary> GetEmployees(Guid? departmentId = null, string city = null)
         //{
         //    using (IEmployeesService service = new EmployeesService())
         //    {
@@ -44,7 +46,8 @@ namespace YavorValchevWebAPI.Controllers
         //    }
         //}
 
-        public IEnumerable<Employee> FilterEmployees(IEnumerable<Employee> employees, Guid? departmentId, string city)
+        public IEnumerable<Employee> FilterEmployees(IEnumerable<Employee> employees, 
+            Guid? departmentId, string city)
         {
             if(departmentId.HasValue)
                 employees = employees?.Where(employee => employee.DepartmentId == departmentId);
