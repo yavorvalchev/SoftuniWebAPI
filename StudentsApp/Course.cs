@@ -1,4 +1,4 @@
-﻿namespace YavorValchevWebAPI.ExternalService
+﻿namespace StudentsApp
 {
     public class Course
     {

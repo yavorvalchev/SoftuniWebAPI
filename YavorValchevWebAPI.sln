@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "YavorValchevWebAPI", "Yavor
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "YavorValchevWebAPITests", "YavorValchevWebAPITests\YavorValchevWebAPITests.csproj", "{2F29BDD7-36B7-4A55-B75B-98E15C5DD025}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StudentsApp", "StudentsApp\StudentsApp.csproj", "{3C9CFCFB-B76F-4772-98A9-91075CD8F1E0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{2F29BDD7-36B7-4A55-B75B-98E15C5DD025}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2F29BDD7-36B7-4A55-B75B-98E15C5DD025}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2F29BDD7-36B7-4A55-B75B-98E15C5DD025}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3C9CFCFB-B76F-4772-98A9-91075CD8F1E0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3C9CFCFB-B76F-4772-98A9-91075CD8F1E0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3C9CFCFB-B76F-4772-98A9-91075CD8F1E0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3C9CFCFB-B76F-4772-98A9-91075CD8F1E0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

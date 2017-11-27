@@ -91,10 +91,8 @@
   <ItemGroup>
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\EmployeesController.cs" />
-    <Compile Include="ExternalService\Course.cs" />
     <Compile Include="ExternalService\IEmployeesService.cs" />
     <Compile Include="ExternalService\EmployeesService.cs" />
-    <Compile Include="ExternalService\Student.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
