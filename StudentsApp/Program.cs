@@ -10,76 +10,61 @@ namespace StudentsApp
     {
         static void Main(string[] args)
         {
-            //Filter by name
-            StudentsFilter_ByName("I");
+            //Foreach way
+            Console.WriteLine("Foreach way");
+            Filter_AverageScore_Foreach();
             Console.ReadKey();
-            //join
-            StudentName_MastersName_Foreach();
-            StudentName_MastersName_LINQ();
+            //LINQ way
+            Console.WriteLine("LINQ way");
+            Filter_AverageScore_LINQ();
             Console.ReadKey();
-            //Method Syntax
-            StudentsFilter_DepartmentAndAverageScore();
             //Composability
+            Console.WriteLine("Composability");
             StudentsFilter_Composability();
+            Console.ReadKey();
+            //Query syntax
+            Console.WriteLine("Query Syntax");
+            //Filter by name
+            //Join
+            StudentName_CourseName_LINQ();
             Console.ReadKey();
         }
 
-        public static void StudentName_MastersName_LINQ()
+        public static void StudentName_CourseName_LINQ()
         {
             var students = GetStudents();
-            var masters = GetMasters();
+            var courses = GetCourses();
             var studentCourse = from s in students
-                                join m in masters on s.MastersId equals m.Id
+                                join m in courses on s.CourseId equals m.Id
                                 select new { s.FullName, CourseName = m.Name };
             foreach (var sc in studentCourse)
             {
                 Console.WriteLine($"{sc.FullName},{sc.CourseName}");
             }
         }
-
-        public static void StudentName_MastersName_Foreach()
+        
+        public static void Filter_AverageScore_Foreach()
         {
             var students = GetStudents();
-            var courses = GetMasters();
             foreach (var student in students)
             {
-                foreach (var course in courses)
+                int sumScores = 0, countScores = 0;
+                foreach (var score in student.Scores)
                 {
-                    if (course.Id == student.MastersId)
-                    {
-                        Console.WriteLine($"{student.FullName},{course.Name}");
-                    }
+                    sumScores += score;
+                    countScores++;
                 }
+                if (countScores > 0 && sumScores / countScores >= 5)
+                    Console.WriteLine(student.FullName);
             }
         }
 
-        public static void StudentsFilter_ByName(string letter)
+        public static void Filter_AverageScore_LINQ()
         {
             var students = GetStudents();
-            
-            var filteredStudents = from s in students
-                                   where s.FullName.StartsWith(letter)
-                                   select s;
-            foreach (var student in filteredStudents)
+            foreach (var student in students.Where(s=>s.Scores.Average() >= 5))
             {
                 Console.WriteLine(student.FullName);
-            }
-        }
-
-        public static void StudentsFilter_DepartmentAndAverageScore()
-        {
-            var students = GetStudents();
-            var masters = GetMasters();
-            
-            foreach (var student in students)
-            {
-                student.MastersDegree = masters.Single(m => m.Id == student.MastersId);
-            }
-            string name = "M";
-            int averageScore = 4;
-            foreach (var student in students.Where(s=>s.Scores.Average() > averageScore && s.MastersDegree.Name.StartsWith(name)))
-            {
-                Console.WriteLine("Student:{0}, Masters:{1}", student.FullName, student.MastersDegree.Name);
             }
         }
 
@@ -87,11 +72,11 @@ namespace StudentsApp
         public static void StudentsFilter_Composability()
         {
             var students = GetStudents();
-            var masters = GetMasters();
+            var courses = GetCourses();
 
             foreach (var student in students)
             {
-                student.MastersDegree = masters.Single(m => m.Id == student.MastersId);
+                student.Course = courses.Single(m => m.Id == student.CourseId);
             }
             string name = "M";
             int? minAverageScore = 4;
@@ -103,16 +88,16 @@ namespace StudentsApp
                 studentsQuery = studentsQuery.Where(s => s.Scores.Average() > minAverageScore.Value);
             foreach (var student in studentsQuery)
             {
-                Console.WriteLine("Student:{0}, Masters:{1}", student.FullName, student.MastersDegree.Name);
+                Console.WriteLine(student.FullName);
             }
         }
 
-        private static List<MastersDegree> GetMasters()
+        private static List<Course> GetCourses()
         {
-            return new List<MastersDegree>
+            return new List<Course>
             {
-                new MastersDegree{ Id = 1, Name = "Marketing"},
-                new MastersDegree{ Id = 2, Name = "Architecture"}
+                new Course{ Id = 1, Name = "Marketing"},
+                new Course{ Id = 2, Name = "Architecture"}
             };
         }
 
@@ -120,9 +105,9 @@ namespace StudentsApp
         {
             return new List<Student>
             {
-                new Student{FullName = "Ivan", MastersId = 1, Scores = new List<int>{ 2, 3, 4, 5, 6 } },
-                new Student{FullName = "Peter", MastersId = 1, Scores = new List<int>{5, 6, 5, 6, 6 } },
-                new Student{FullName = "Georgy", MastersId = 2, Scores = new List<int>{4, 6, 3, 6, 5 } }
+                new Student{FullName = "Ivan", CourseId = 1, Scores = new List<int>{ 2, 3, 4, 5, 6 } },
+                new Student{FullName = "Peter", CourseId = 1, Scores = new List<int>{5, 6, 5, 6, 6 } },
+                new Student{FullName = "Georgy", CourseId = 2, Scores = new List<int>{4, 6, 3, 6, 5 } }
             };
         }
     }
