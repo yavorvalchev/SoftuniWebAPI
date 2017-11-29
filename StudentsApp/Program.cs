@@ -17,9 +17,10 @@ namespace StudentsApp
             StudentName_MastersName_Foreach();
             StudentName_MastersName_LINQ();
             Console.ReadKey();
-            //Filter students by score with LINQ
-
+            //Method Syntax
             StudentsFilter_DepartmentAndAverageScore();
+            //Composability
+            StudentsFilter_Composability();
             Console.ReadKey();
         }
 
@@ -69,12 +70,38 @@ namespace StudentsApp
         {
             var students = GetStudents();
             var masters = GetMasters();
+            
             foreach (var student in students)
             {
                 student.MastersDegree = masters.Single(m => m.Id == student.MastersId);
             }
+            string name = "M";
+            int averageScore = 4;
+            foreach (var student in students.Where(s=>s.Scores.Average() > averageScore && s.MastersDegree.Name.StartsWith(name)))
+            {
+                Console.WriteLine("Student:{0}, Masters:{1}", student.FullName, student.MastersDegree.Name);
+            }
+        }
 
-            foreach (var student in students.Where(s=>s.Scores.Average() > 4 && s.MastersDegree.Name.StartsWith("M")))
+
+        public static void StudentsFilter_Composability()
+        {
+            var students = GetStudents();
+            var masters = GetMasters();
+
+            foreach (var student in students)
+            {
+                student.MastersDegree = masters.Single(m => m.Id == student.MastersId);
+            }
+            string name = "M";
+            int? minAverageScore = 4;
+
+            var studentsQuery = students.AsQueryable();
+            if (!string.IsNullOrEmpty(name))
+                studentsQuery = studentsQuery.Where(s => s.FullName.StartsWith(name));
+            if (minAverageScore.HasValue)
+                studentsQuery = studentsQuery.Where(s => s.Scores.Average() > minAverageScore.Value);
+            foreach (var student in studentsQuery)
             {
                 Console.WriteLine("Student:{0}, Masters:{1}", student.FullName, student.MastersDegree.Name);
             }
